@@ -23,6 +23,16 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
+## Running the Examples
+```bash
+python -m examples.[folder].main
+```
+
+Ex:
+```bash
+python -m examples.assets.main
+```
+
 ## Usage
 
 Subclass `Game` and override its methods to implement your game logic. You can also subclass `GameObject` to create modular game components.

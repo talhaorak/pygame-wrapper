@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pygame-wrapper",
-    version="0.1.0",
+    version="0.1.1",
     description="A lightweight Pygame wrapper that simplifies game development",
     author="Talha Orak",
     author_email="talhaorak@users.noreply.github.com",
