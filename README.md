@@ -40,6 +40,7 @@ Subclass `Game` and override its methods to implement your game logic. You can a
 ```python
 from pygame_wrapper.wrapper import Game
 from pygame_wrapper.game_object import GameObject
+from pygame_wrapper.config import GameConfig
 import pygame
 
 class MyGame(Game):
@@ -60,13 +61,13 @@ class MyGame(Game):
         pass
 
 if __name__ == '__main__':
-    settings = {
-        'width': 800,
-        'height': 600,
-        'caption': 'My Game',
-        'fps': 60,
-        'bg_color': (30, 30, 30)
-    }
+    config = GameConfig(
+        width=800,
+        height=600,
+        caption='Your game window title',
+        fps=120,
+        bg_color=(0, 0, 0)
+    )
     MyGame(settings).run()
 ```
 
