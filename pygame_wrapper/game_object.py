@@ -62,6 +62,14 @@ class GameObject:
         for child in self.children:
             child.on_event(event)
 
+    def on_key_pressed(self, keys: list[bool]) -> None:
+        """
+        Called when a key is pressed.
+        Override to handle custom key events.
+        """
+        for child in self.children:
+            child.on_key_pressed(keys)
+
     def on_update(self, u: Update) -> None:
         """
         Method for specifying update events

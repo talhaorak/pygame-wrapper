@@ -58,6 +58,13 @@ class Game:
         """
         pass
 
+    def on_key_pressed(self, keys: list[bool]) -> None:
+        """
+        Called when a key is pressed.
+        Override to handle custom key events.
+        """
+        pass
+
     def on_update(self, u: Update) -> None:
         """
         Called every frame to update game state.
@@ -96,37 +103,56 @@ class Game:
 
         while self.is_running:
             # Event handling
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.is_running = False
-                else:
-                    self.on_event(event)
-                    for obj in self.game_objects:
-                        obj.on_event(event)
+            self._check_events()
 
             # Update
-            update = Update(
-                time=pygame.time.get_ticks(),
-                delta=self.clock.tick(self.config.fps) / 1000.0,
-                ticks=self.ticks
-            )
-            self.on_update(update)
-
-            for obj in self.game_objects:
-                if obj.is_enabled:
-                    obj.on_update(update)
+            self._update()
 
             # Render
-            self.screen.fill(self.config.bg_color)
-            self.on_render()
-            for obj in self.game_objects:
-                obj.on_render(self.screen)
-            self.on_post_render()
-            pygame.display.flip()
+            self._render()
+
             self.ticks += 1
 
+        self._cleanup()
+
+        pygame.quit()
+        sys.exit()
+
+    def _check_events(self):
+        keys = pygame.key.get_pressed()
+        if len(keys) > 0:
+            self.on_key_pressed(keys)
+            for obj in self.game_objects:
+                obj.on_key_pressed(keys)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.is_running = False
+            else:
+                self.on_event(event)
+                for obj in self.game_objects:
+                    obj.on_event(event)
+
+    def _update(self) -> None:
+        update = Update(
+            time=pygame.time.get_ticks(),
+            delta=self.clock.tick(self.config.fps) / 1000.0,
+            ticks=self.ticks
+        )
+        self.on_update(update)
+
+        for obj in self.game_objects:
+            if obj.is_enabled:
+                obj.on_update(update)
+
+    def _render(self) -> None:
+        self.screen.fill(self.config.bg_color)
+        self.on_render()
+        for obj in self.game_objects:
+            obj.on_render(self.screen)
+        self.on_post_render()
+        pygame.display.flip()
+
+    def _cleanup(self) -> None:
         self.on_cleanup()
         for obj in self.game_objects:
             obj.on_cleanup()
-        pygame.quit()
-        sys.exit()
